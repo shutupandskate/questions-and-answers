@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Questions and answers{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h3>Hot tags</h3>
+        <div class="span11">
+            {% if tag_list %}{% include 'includes/tag_cloud.tmpl' %}{% endif %}
+            <a href="/tags/" class="see-all">see all</a>
+        </div>
+        <div class="clearfix"></div>
+
+        <h3>Know-alls</h3>
+        <div class="span11">
+            {% for a_count, q_count, username, first_name, last_name, pk in knowing_users %}
+                {% include 'includes/user_card.tmpl' %}
+            {% endfor %}
+            <a href="/users/" class="see-all">see all</a>
+        </div>
+        <div class="clearfix"></div>
+
+        <h3>Most curious</h3>
+        <div class="span11">
+            <div class="row-fluid">
+                {% for q_count, a_count, username, first_name, last_name, pk in curious_users %}
+                    {% include 'includes/user_card.tmpl' %}
+                {% endfor %}
+            </div>
+
+            <a href="/users/" class="see-all">see all</a>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+{% endblock %}

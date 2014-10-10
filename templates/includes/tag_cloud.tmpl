@@ -1,0 +1,20 @@
+{% load filter %}
+
+<div class="tag-cloud">
+    {% for tag in tag_list %}
+        {% with l=forloop.counter0 %}
+            {% if size|lookup:l <= 30 %}
+                <a href="/tag/{{tag.pk}}/" style="font-size:18px" >{{ tag }}</a>
+            {% endif %}
+            {% if size|lookup:l > 30 and size|lookup:l <= 40 %}
+                <a href="/tag/{{tag.pk}}/" style="font-size:30px" >{{ tag }}</a>
+            {% endif %}
+            {% if size|lookup:l > 40 and size|lookup:l <= 50 %}
+                <a href="/tag/{{tag.pk}}/" style="font-size:40px" >{{ tag }}</a>
+            {% endif %}
+            {% if size|lookup:l > 50 %}
+                <a href="/tag/{{tag.pk}}/" style="font-size:50px" >{{ tag }}</a>
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+</div>

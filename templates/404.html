@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}404 Not found{% endblock %}
+
+{% block content %}
+    <div class="span10">
+        <h3>404 Page is not found</h3>
+        <p>Try something else:</p>
+        <ul>
+            <li>Find <a href="/tags/">topics</a> you are interested in</li>
+            <li><a href="/questions/add/">Ask</a> some question</li>
+            <li>Check out new <a href="/users/">users</a></li>
+            {% if user.is_authenticated() %}
+                <li>Visit your <a href="/user/{{ request.user.pk }}/">account</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

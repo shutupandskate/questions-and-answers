@@ -1,0 +1,51 @@
+{% load set_var %}
+
+{% if type == "question" %}
+    {% set post = question %}
+    {% set q = True %}
+{% elif type == "answer" %}
+    {% set post = answer %}
+    {% set a = True %}
+{% endif %}
+
+<div class="user-block thumbnail">
+    <div class="text-block">
+        <div class="text-block__item">
+            author 
+            <a href="/user/{{ post.author.pk }}/">
+                {% ifequal post.author|stringformat:'s' request.user.username|stringformat:'s' %}
+                    you
+                {% else %}
+                    {{ post.author.username }}
+                {% endifequal %}
+            </a>
+        </div>
+        <div class="text-block__item">
+            {% if q %}asked{% elif a %}answered{% endif %} <b>{{ post.date|date:"d M Y" }}</b>
+        </div>
+        {% if q %}
+            <div class="text-block__item">viewed <b>{{ views }}</b></div>
+        {% endif %}
+    </div>
+
+    {% if q %}
+        <div class="bookmark-block">
+            <button id="bm-button" class="btn btn-small{% if bm %} btn-inverse marked{% endif %}" bm_num="{{ bm_num }}" q_id="{{ post.pk }}">
+                <i class="icon-bookmark{% if bm %} icon-white{% else %} icon-black{% endif %}"></i>
+                <span>bookmark{% if bm %}ed{% endif %}</span>
+            </button>
+
+            <div class="bm-button__count">x<span>{{bm_num}}</span></div>
+        </div>
+    {% endif %}
+
+    <div class="votes-block" type="{% if q %}question{% elif a %}answer{% endif %}" id="{{ post.pk }}">
+
+        <a class="vote-up vote-button{% if user_vote == 1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-up"></i></a>
+
+        <span class="votes-number" votes="{{ post.votes }}">{{ post.votes }}</span>
+
+        <a class="vote-down vote-button{% if user_vote == -1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-down"></i></a>
+    </div>
+
+</div>

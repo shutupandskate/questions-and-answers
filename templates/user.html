@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load give_me_tags %}
+
+{% block title %}{{ pageUser.username }} profile{% endblock %}
+
+{% block content %}
+    <div class="user-activity__info">
+        <div class="thumbnail">
+            <h3>
+                <a href="/user/{{ pageUser.pk }}">
+                    {% if pageUser.first_name or pageUser.last_name %}
+                        {{ pageUser.first_name }}&nbsp;{{ pageUser.last_name }}
+                    {% else %}
+                        {{ pageUser.username }}
+                    {% endif %}
+                </a>
+            </h3>
+            <table>
+                <tr>
+                    <td>e-mail</td><td><b>{{ pageUser.email }}</b></td>
+                </tr>
+                <tr>
+                    <td>last seen</td><td><b>{{ pageUser.last_login }}</b></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    {% if tag_list %}
+        <div class="span5 user-activity__tags">
+            {% include 'includes/tag_cloud.tmpl' %}
+        </div>
+    {% endif %}
+
+    <div class="clearfix"></div>
+
+    {% block userdata  %}
+        <div class="user-activity">
+            <h3>Latest activity</h3>
+            <div class="span5">
+                {% if asked_num > 0 %}
+                    <h4>Questions ({{ asked_num }} in total)</h4>
+                    {% for question in questions %}
+                        <a href="/question/{{ question.pk }}">{{ question.head }}</a><hr>
+                    {% endfor %}
+                    <a class="see-all" href="/user/{{ pageUser.pk }}/q/">see all</a>
+                {% else %}
+                    <h4>Questions</h4>
+                    <p>User added no questions yet</p>
+                {% endif %}
+            </div>
+            <div class="span5">
+                {% if bm_num != 0 %}
+                    <h4>Bookmarks ({{ bm_num }} in total)</h4>
+                    {% for bookmark in bookmarks %}
+                        <a href="/question/{{ bookmark.question.pk }}/">{{ bookmark.question.head }}</a><hr/>
+                    {% endfor %}
+                    <a class="see-all" href="/user/{{ pageUser.pk }}/bm/">see all</a>
+                {% else %}
+                    <h4>Bookmarks</h4>
+                    <p>User has no bookmarks yet</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endblock %}
+
+
+{% endblock %}

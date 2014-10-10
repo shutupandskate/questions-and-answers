@@ -1,0 +1,7 @@
+<div class="header__user-block">
+    {% if not user.is_anonymous %}
+        <span>You're logged as <a href="/user/{{ user.pk }}/">{{ user }}</a> (<a href="/account/logout/">log out</a>)</span>
+    {% else %}
+        <span>Please <a href="/account/login/">log in</a> or <a href="/account/register/">register</a>.</span>
+    {% endif %}
+</div>

@@ -1,0 +1,6 @@
+{% for tag in tags %}
+    <div>
+        <a href="/tag/{{tag.pk}}"><span class="badge badge-inverse">{{tag}}</span></a>
+        <p class="show-tags__count">x {{tag.count}}</p>
+    </div>
+{% endfor %}

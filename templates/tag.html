@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load substract %}
+
+{% block title %}{{ tag }}{% endblock %}
+
+{% block content %}
+    <div class="span5 thumbnail">
+        <h3>{{ tag.name }}</h3>
+        <table>
+            <tr>
+                <td>description</td><td><b>{{ tag.description }}</b></td>
+            </tr>
+            <tr>
+                <td>created</td><td><b>{{ tag.date }}</b></td>
+            </tr>
+        </table>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="span12">
+        <h3>Tagged questions</h3>
+        {% for question in question_list %}
+            {% include 'includes/question_item.tmpl' %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{%block content%}
+    {% if not user.is_anonymous %}
+        <h3>Add new question:</h3>
+        {% if form.subject.errors %}
+            <div class="error">
+                <p>Ooops..! Seems that something is wrong! Check your data and submit again, please.</p>
+            </div>
+        {% endif %}
+
+        <form  method="post" action="/questions/add/" id="question">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-inverse" type="submit" name="submit" value="Send" />
+        </form>
+
+    {%else%}
+        <div>
+            <h3>Sorry</h3>
+            <div>
+                <p>Anonymous users have no ability to ask questions here.</p>
+                <p>You're welcomed to <a href="/account/login/">log in</a> or <a href="/account/register/">register</a>.</p>
+            </div>
+        </div>
+    {%endif%}
+{%endblock%}
+

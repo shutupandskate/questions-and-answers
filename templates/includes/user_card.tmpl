@@ -1,0 +1,30 @@
+{% load staticfiles %}
+
+
+<div class="thumbnail user-card">
+    <div class="user-card__info">
+        <ul>
+            <li>
+            {% if first_name %}
+                <a href="/user/{{ pk }}">{{ first_name }}&nbsp;{{ last_name }}</a>
+            {% else %}
+                <a href="/user/{{ pk }}">{{ username }}</a>
+            {% endif %}
+            </li>
+            <li>
+                <a href="/user/{{ pk }}/q">{{ q_count }} questions</a>
+            </li>
+            <li>
+                {{ a_count }} answers
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="user-card__image">
+        <a href="/user/{{ pk }}">
+            <img src="{% static '/img/pic.jpeg' %}"></img>
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>

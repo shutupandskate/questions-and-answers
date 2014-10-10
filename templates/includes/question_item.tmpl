@@ -1,0 +1,36 @@
+{% load set_var %}
+
+{% if object == 'bm' %}
+    {% set object = bookmark.question %}
+{% else %}
+    {% set object = question %}
+{% endif %}
+
+<div class="question-list__item">
+    <a href="/question/{{ object.pk }}/" class="question-list__button btn btn-inverse">
+        <div>{{ object.answer_set.count }}</div>
+        <div>answers</div>
+    </a>
+    <a href="/question/{{ object.pk }}/" class="question-list__button btn btn-inverse">
+        <div>{{ object.votes }}</div>
+        <div>votes</div>
+    </a>
+    <a href="/question/{{ object.pk }}/" class="question-list__button btn btn-inverse">
+        <div>{{ object.questionview_set.count }}</div>
+        <div>views</div>
+    </a>
+
+    <div class="question-list__desc">
+        <a class="question-link"  href="/question/{{ object.pk }}/">
+            {{ object.head }}
+        </a>
+        by <a href="/user/{{ object.author.pk }}/">{{ object.author.username }}</a>
+
+        <div class="clearfix"></div>
+
+        {% for tag in object.tags.all %}
+            <a href="/tag/{{ tag.pk }}/"><span class="badge badge-inverse">{{ tag }}</span></a>
+        {% endfor %}
+    </div>
+    <div class="clearfix"></div>
+</div>

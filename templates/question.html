@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load paggy %}
+{% load substract %}
+
+
+{% block title %}{{question.head}}{% endblock %}
+
+
+{% block content %}
+
+    <script type="text/javascript" src="/js/question.js"></script>
+
+
+    <div class="question-post">
+        <h3>{{question.head}}</h3>
+        {% include 'includes/entry_card.tmpl' with type="question" %}
+        <div>{{question.content}}</div>
+        {%for tag in question.tags.all %}
+            <a href="/tag/{{tag.pk}}/"><span class="badge badge-inverse">{{tag}}</span></a>
+        {% endfor %}
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="answer-list">
+        <h3><span id="ans_num">{{ ans_num }}</span> answers</h3>
+        {% if ans_num == 0 %}
+            <p id="noanswer">No one replied yet. Be first!</p>
+        {% else %}
+            {% for answer in answers %}
+                <div class="answer-list__item">
+                    {% include 'includes/entry_card.tmpl' with type="answer" %}
+                    <p>{{ answer.content }}</p>
+                    <div class="clearfix"></div>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% include 'includes/pagination.tmpl' with objectName="answers" %}
+
+    {% if not user.is_anonymous %}
+        <h4>Suggest your answer</h4>
+        <form class="add-answer" method="post">
+            {% csrf_token %}
+            {{ form_add.as_p }}
+            <input class="author" type="hidden" name="username" value="{{ user.pk }}" />
+            <input class="q-id" type="hidden" name="q_id" value="{{ question.pk }}" />
+            <input id="sendAnswer" class="btn btn-inverse" type="submit" value="Send" />
+        </form>
+    {% else %}
+        <h4><a href="/account/login/">Log in</a> and add your answer.</h4>
+    {% endif %}
+
+{% endblock %}

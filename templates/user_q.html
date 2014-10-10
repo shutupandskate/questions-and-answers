@@ -1,0 +1,16 @@
+{% extends "user.html" %}
+{% load paggy %}
+{% load substract %}
+
+{% block title %}{{ pageUser.username }} questions{% endblock %}
+
+
+{% block userdata %}
+    <h3>Questions by {{ pageUser.username }}</h3>
+    {% for question in questions %}
+        {% include 'includes/question_item.tmpl' %}
+    {% endfor %}
+{% endblock %}
+
+
+

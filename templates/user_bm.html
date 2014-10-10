@@ -1,0 +1,14 @@
+{% extends "user.html" %}
+{% load paggy %}
+{% load substract %}
+
+{% block title %}{{ user.username }} bookmarks{% endblock %}
+
+{% block userdata %}
+    {% for bookmark in bookmark_list %}
+        {% include 'includes/question_item.tmpl' with object='bm' %}
+    {% endfor %}
+{%endblock%}
+
+
+

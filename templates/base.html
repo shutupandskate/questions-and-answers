@@ -1,0 +1,57 @@
+{% load give_me_users %}
+{% load give_me_tags %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+
+        <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/css/font-awesome.css" rel="stylesheet"/>
+        <link href="/css/styles.css" rel="stylesheet"/>
+        <script type="text/javascript" src="/js/jquery.js"></script>
+        <script type="text/javascript" src="/js/settings.js"></script>
+        {% block statics %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="navbar navbar-inverse navbar-static-top">
+            <div class="navbar-inner">
+                <a class="brand" href="/">main</a>
+                <ul class="nav">
+                    <li><a href="/questions/add/">ask</a></li>
+                    <li><a href="/questions/">answer</a></li>
+                    <li><a href="/users/">users</a></li>
+                    <li><a href="/tags/">tags</a></li>
+                    <li><a href="#">search</a></li>
+                </ul>
+                {% include 'includes/user_block.tmpl' %}
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span8 offset1 content-area">{% block content %}{% endblock %}
+                </div>
+
+                <div class="span3">
+                    <h4>Newcomers</h4>
+                    {% show_users %}
+                    <h4>Popular tags</h4>
+                    {% show_tags %}
+
+                    {% block right_sidebar %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+
+        <!--DEBUG-->
+        <div class="clearfix"></div>
+        <pre style="margin-top: 40px;">{% filter force_escape %}{% debug %}{% endfilter %}</pre>
+
+    </body>
+
+</html>

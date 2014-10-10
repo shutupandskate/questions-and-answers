@@ -1,0 +1,34 @@
+{% load paggy %}
+{% load set_var %}
+
+{% if objectName == 'answers' %}
+    {% set object = answers %}
+{% elif objectName == 'users' %}
+    {% set object = users %}
+{%  elif objectName == 'questions' %}
+    {% set object = questions %}
+{% else %}
+    {% set object = users %}
+{% endif %}
+
+<div class="clearfix"></div>
+
+<div class="pagination">
+    {% if object.has_previous or object.has_next %}
+        <ul>
+            {% if object.has_previous %}
+                <li><a href="?page={{ object.previous_page_number }}">Prev</a></li>
+            {% endif %}
+
+            {% for n in object.number|paggy:2 %}
+                {% if n != -1 and n != 0 and n != object.paginator.num_pages|add:1 and n != object.paginator.num_pages|add:2 %}
+                    <li{% if n == object.number %} class="pager_selected"{% endif %}><a href="/{{ objectName }}/?page={{ n }}">{{ n }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if object.has_next %}
+                <li><a href="?page={{ object.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</div>
