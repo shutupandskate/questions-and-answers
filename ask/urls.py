@@ -55,4 +55,3 @@ urlpatterns = patterns('',
     (r'^fonts/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT + '/fonts'}),
 )
-
