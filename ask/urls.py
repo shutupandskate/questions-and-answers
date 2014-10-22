@@ -14,26 +14,23 @@ urlpatterns = patterns('',
 
     url('^$', views.main, name='main'),
 
-    url('^users/$', views.user_list, name='user_list'),
+    url('^users/$', views.users_list, name='users_list'),
 
-    url(r'^questions/$', views.question_list, name='question_list'),
+    url(r'^questions/$', views.questions_list, name='questions_list'),
     url(r'^questions/add/$', views.add_question, name='add_question'),
 
-    url(r'^user/(?P<user_id>\d+)/$', views.user, name='user'),
-    url(r'^user/(?P<user_id>\d+)/q/$', views.user_q, name='user_q'),
-    url(r'^user/(?P<user_id>\d+)/bm/$', views.user_bm, name='user_bm'),
+    url(r'^user/(?P<user_id>\d+)/$', views.user_page, name='user_page'),
+    url(r'^user/(?P<user_id>\d+)/q/$', views.user_question_list, name='user_question_list'),
+    url(r'^user/(?P<user_id>\d+)/bm/$', views.user_bookmarks, name='user_bookmarks'),
 
-    url(r'^question/(?P<question_id>\d+)/$', views.question, name='question',),
-    url(r'^question/(?P<question_id>\d+)/vl/$', views.question_vl, name='question_vl',),
-    url(r'^question/(?P<question_id>\d+)/a/$', views.question_a, name='question_a',),
-    url(r'^question/(?P<question_id>\d+)/bm/$', views.question_bm, name='question_bm',),
-    url(r'^question/(?P<question_id>\d+)/vote/(?P<action>up|down)/$', views.question_vote, name='question_vote',),
-    #url(r'^question/(?P<question_id>\d+)/vote/$', views.question_down, {'foo': 'bar'}, name='question_down'),
+    url(r'^question/(?P<question_id>\d+)/$', views.question_page, name='question_page',),
+    #url(r'^question/(?P<question_id>\d+)/vl/$', views.question_vl, name='question_vl',),
+    url(r'^question/(?P<question_id>\d+)/a/$', views.add_answer, name='add_answer',),
 
-    #url(r'^answer/(?P<answer_id>\d+)/up/$', views.answer_up, name='answer_up',),
-    #url(r'^answer/(?P<answer_id>\d+)/down/$', views.answer_down, name='answer_down',),
+    url(r'^question/(?P<question_id>\d+)/bm/$', views.bookmark_question, name='bookmark_question',),
+    url(r'^question/(?P<question_id>\d+)/vote/(?P<action>up|down)/$', views.vote_for_question, name='vote_for_question',),
 
-    url(r'^tag/(?P<tag_id>\d+)/$', views.tag, name='tag'),
+    url(r'^tag/(?P<tag_id>\d+)/$', views.tag_page, name='tag_page'),
     url(r'^tags/$', views.tag_list, name='tag_list'),
 
     url(r'^account/login/$', login),

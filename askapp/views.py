@@ -11,6 +11,7 @@ from django.db import IntegrityError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django import template
+from django.views.decorators.http import require_POST
 
 from askapp.models import User, Question, Answer, QuestionView, Tag, Bookmark, QVote
 
@@ -47,7 +48,7 @@ def main(request):
     }, context_instance=RequestContext(request))
 
 
-def user(request, user_id):
+def user_page(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     asked_num = Question.objects.filter(author__username=user.username).count()
     questions = Question.objects.filter(author__username=user.username)[:5]
@@ -75,7 +76,7 @@ def user(request, user_id):
     }, context_instance=RequestContext(request))
 
 
-def user_q(request, user_id):
+def user_question_list(request, user_id):
     pageUser = get_object_or_404(User, pk=user_id)
     asked_num = Question.objects.filter(author__username=pageUser.username).count()
     taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name',
@@ -103,7 +104,7 @@ def user_q(request, user_id):
     }, context_instance=RequestContext(request))
 
 
-def user_bm(request, user_id):
+def user_bookmarks(request, user_id):
     pageUser = get_object_or_404(User, pk=user_id)
     answ_num = Answer.objects.filter(author__username=pageUser.username).count()
     taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name',
@@ -135,7 +136,7 @@ def user_bm(request, user_id):
     })
 
 
-def user_list(request):
+def users_list(request):
     user_list = User.objects.all().order_by("-date_joined").annotate(a_count=Count('answer')).annotate(
         q_count=Count('question')).values_list('a_count', 'q_count', 'username', 'first_name', 'last_name', 'pk')
 
@@ -165,20 +166,20 @@ def add_question(request):
 
         for tag in request.POST.get('tags').split(","):
             try:
-                tagObj = Tag.objects.get(name=tag)
+                tag_obj = Tag.objects.get(name=tag)
             except ObjectDoesNotExist:
-                tagObj = Tag.objects.create(
+                tag_obj = Tag.objects.create(
                     name=tag,
                 )
 
-            q.tags.add(tagObj.pk)
+            q.tags.add(tag_obj.pk)
         q.save()
 
         return HttpResponseRedirect("/questions/")
     return render(request, 'add_question.html', {})
 
 
-def question_list(request):
+def questions_list(request):
     question_list = Question.objects.all().order_by("-date")
     paginator = Paginator(question_list, 10)
     page = request.GET.get('page')
@@ -194,118 +195,113 @@ def question_list(request):
     })
 
 
-def tag(request, tag_id):
-    tagObj = get_object_or_404(Tag, pk=tag_id)
+def tag_page(request, tag_id):
+    tag_obj = get_object_or_404(Tag, pk=tag_id)
     tag_list = Tag.objects.all()
     question_list = Question.objects.filter(tags__pk=tag_id).order_by("-date")
     size = Question.objects.filter(tags__pk=tag_id).count()
 
     return render_to_response('tag.html', {
-        'tag': tagObj,
+        'tag': tag_obj,
         'tag_list': tag_list,
         'question_list': question_list,
         'size': size,
     }, context_instance=RequestContext(request))
 
 
-def question_a(request, question_id):
+@require_POST
+def add_answer(request, question_id):
     if request.user.is_authenticated():
-        if request.method == 'POST':
-            if request.POST.get('content'):
-                a = Answer.objects.create(
-                    content=request.POST.get("content"),
-                    question=Question.objects.get(id=question_id),
-                    author=request.user,
-                    date=timezone.now(),
-                    validity=False,
-                )
+        if request.POST.get('content'):
+            a = Answer.objects.create(
+                content=request.POST.get("content"),
+                question=Question.objects.get(id=question_id),
+                author=request.user,
+                date=timezone.now(),
+                validity=False,
+            )
     return HttpResponse("")
 
 
-def question_bm(request, question_id):
+@require_POST
+def bookmark_question(request, question_id):
     if request.user.is_authenticated():
-        if request.method == 'POST':
-            try:
-                Bookmark.objects.get(question=question_id, user=request.user).delete()
-
-            except Bookmark.DoesNotExist:
-
-                b = Bookmark(
-                    question=Question.objects.get(id=question_id),
-                    user=User.objects.get(pk=request.user.pk),
-                )
-                b.save()
-
+        try:
+            Bookmark.objects.get(question=question_id, user=request.user).delete()
+        except Bookmark.DoesNotExist:
+            b = Bookmark(
+                question=Question.objects.get(id=question_id),
+                user=User.objects.get(pk=request.user.pk),
+            )
+            b.save()
         return HttpResponse("")
 
 
-def question_vl(request, question_id):
-    questionObj = get_object_or_404(Question, pk=question_id)
+# def question_vl(request, question_id):
+#     question_obj = get_object_or_404(Question, pk=question_id)
+#
+#     if request.user == question_obj.author:
+#         if request.method == 'POST':
+#             if request.POST.get('a_id'):
+#                 a = Answer.objects.get(pk=request.POST.get('a_id'))
+#                 if not a.validity:
+#                     a.validity = True
+#                 else:
+#                     a.validity = False
+#                 a.save()
+#         return HttpResponse("")
 
-    if request.user == questionObj.author:
-        if request.method == 'POST':
-            if request.POST.get('a_id'):
-                a = Answer.objects.get(pk=request.POST.get('a_id'))
-                if not a.validity:
-                    a.validity = True
-                else:
-                    a.validity = False
-                a.save()
-        return HttpResponse("")
 
-
-def question_vote(request, question_id, action):
+@require_POST
+def vote_for_question(request, question_id, action):
     question = Question.objects.get(pk=question_id)
     user = User.objects.get(pk=request.user.pk)
 
-    if request.method == 'POST':
-        try:
-            vote_object = QVote.objects.get(question=question, user=user)
-            vote = vote_object.vote
-        except QVote.DoesNotExist:
-            vote = 0
+    try:
+        vote_object = QVote.objects.get(question=question, user=user)
+        vote = vote_object.vote
+    except QVote.DoesNotExist:
+        vote = 0
 
-        if vote == 1:  # you already voted up
-            question.up_votes -= 1
-            if action == 'up':
-                vote_object.delete()
-                question.save()
-            elif action == 'down':
-                vote_object.vote = -1
-                vote_object.save()
-                question.down_votes += 1
+    if vote == 1:  # you already voted up
+        question.up_votes -= 1
+        if action == 'up':
+            vote_object.delete()
             question.save()
-
-        elif vote == -1:  # you have voted down
-            question.down_votes -= 1
-            if action == 'up':
-                vote_object.vote = 1
-                vote_object.save()
-                question.up_votes += 1
-            elif action == 'down':
-                vote_object.delete()
-            question.save()
-
-        elif vote == 0:  # you haven't voted yet
-            vote_object = QVote.objects.create(
-                question=question,
-                user=user,
-            )
-            if action == 'up':
-                vote_object.vote = 1
-                question.up_votes += 1
-            elif action == 'down':
-                vote_object.vote = -1
-                question.down_votes += 1
+        elif action == 'down':
+            vote_object.vote = -1
             vote_object.save()
-            question.save()
+            question.down_votes += 1
+        question.save()
+
+    elif vote == -1:  # you have voted down
+        question.down_votes -= 1
+        if action == 'up':
+            vote_object.vote = 1
+            vote_object.save()
+            question.up_votes += 1
+        elif action == 'down':
+            vote_object.delete()
+        question.save()
+
+    elif vote == 0:  # you haven't voted yet
+        vote_object = QVote.objects.create(
+            question=question,
+            user=user,
+        )
+        if action == 'up':
+            vote_object.vote = 1
+            question.up_votes += 1
+        elif action == 'down':
+            vote_object.vote = -1
+            question.down_votes += 1
+        vote_object.save()
+        question.save()
 
     return HttpResponse("")
 
 
-
-
-def question(request, question_id):
+def question_page(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
     # ## VIEWS

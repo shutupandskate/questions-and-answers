@@ -190,3 +190,13 @@ textarea {
 .label-info, .badge-info {
     background-color:#545454;
 }
+
+.validity-error {
+    display: none;
+    float: left;
+    padding-left: 10px;
+}
+
+#add-question__submit {
+    float: left;
+}

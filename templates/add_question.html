@@ -26,8 +26,11 @@
             <div>
                 <input id="id_tags" data-role="tagsinput" name="tags" type="text">
             </div>
-            <input class="btn btn-inverse" type="submit" value="Send" />
+            <input id="add-question__submit" class="btn btn-inverse" type="submit" value="Send" />
+            <div id="validity-error" class="validity-error"><i>Make sure you filled all fields.</i></div>
+            <div class="clearfix"></div>
         </form>
+        <script type="text/javascript" src="/js/add_question.js"></script>
 
     {% else %}
         <div>
