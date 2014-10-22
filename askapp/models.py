@@ -16,7 +16,8 @@ class Question(models.Model):
     author = models.ForeignKey(User)
     date = models.DateTimeField(db_index=True, default=datetime.datetime.now())
     tags = models.ManyToManyField(Tag, related_name='questions', null=True, blank=True)
-    votes = models.IntegerField(default=0)
+    up_votes = models.IntegerField(default=0)
+    down_votes = models.IntegerField(default=0)
 
     def __unicode__(self):
         return '%s, Author: %s, Date: %s' % (self.head, self.author, self.date)

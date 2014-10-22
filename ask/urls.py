@@ -8,7 +8,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 
-
 urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
@@ -28,18 +27,18 @@ urlpatterns = patterns('',
     url(r'^question/(?P<question_id>\d+)/vl/$', views.question_vl, name='question_vl',),
     url(r'^question/(?P<question_id>\d+)/a/$', views.question_a, name='question_a',),
     url(r'^question/(?P<question_id>\d+)/bm/$', views.question_bm, name='question_bm',),
-    url(r'^question/(?P<question_id>\d+)/up/$', views.question_up, name='question_up',),
-    url(r'^question/(?P<question_id>\d+)/down/$', views.question_down, name='question_down',),
+    url(r'^question/(?P<question_id>\d+)/vote/(?P<action>up|down)/$', views.question_vote, name='question_vote',),
+    #url(r'^question/(?P<question_id>\d+)/vote/$', views.question_down, {'foo': 'bar'}, name='question_down'),
 
-    url(r'^answer/(?P<answer_id>\d+)/up/$', views.answer_up, name='answer_up',),
-    url(r'^answer/(?P<answer_id>\d+)/down/$', views.answer_down, name='answer_down',),
+    #url(r'^answer/(?P<answer_id>\d+)/up/$', views.answer_up, name='answer_up',),
+    #url(r'^answer/(?P<answer_id>\d+)/down/$', views.answer_down, name='answer_down',),
 
     url(r'^tag/(?P<tag_id>\d+)/$', views.tag, name='tag'),
     url(r'^tags/$', views.tag_list, name='tag_list'),
 
     url(r'^account/login/$', login),
     url(r'^account/logout/$', logout,
-            {'next_page': '/'}),
+        {'next_page': '/'}),
     url(r'^account/register/$', views.register, name='register'),
 
     # static

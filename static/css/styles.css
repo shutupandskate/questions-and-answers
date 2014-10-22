@@ -45,6 +45,12 @@ textarea {
     font-size: 13px;
     margin-left: 4px;
 }
+
+.user-activity li {
+    list-style: none;
+    padding: 7px 0;
+    border-bottom: 1px solid #999;
+}
 /* user profile end */
 
 /* main */
@@ -174,4 +180,13 @@ textarea {
     display: inline;
 }
 
+.answer-list__item {
+    border-bottom: 1px solid #999;
+    padding: 10px 0;
+}
+
 /* question block end */
+
+.label-info, .badge-info {
+    background-color:#545454;
+}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, render
@@ -15,7 +16,7 @@ from askapp.models import User, Question, Answer, QuestionView, Tag, Bookmark, Q
 
 
 register = template.Library()
-from askapp.forms import RegisterForm, AddQuestionForm, AddAnswerForm, ValidAnswerForm
+from askapp.forms import RegisterForm, AddAnswerForm, ValidAnswerForm
 
 
 def tag_list(request):
@@ -105,8 +106,11 @@ def user_q(request, user_id):
 def user_bm(request, user_id):
     pageUser = get_object_or_404(User, pk=user_id)
     answ_num = Answer.objects.filter(author__username=pageUser.username).count()
-    taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name', 'questions__tags__pk').distinct()[:20]
-    sizelist = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',flat=True)[:20]
+    taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name',
+                                                                       'questions__tags__pk').distinct()[:20]
+    sizelist = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',
+                                                                                                                flat=True)[
+               :20]
     tslist = zip(taglist, sizelist)
 
     bookmark_list = Bookmark.objects.filter(user=User.objects.get(pk=user_id))
@@ -152,26 +156,26 @@ def user_list(request):
 
 def add_question(request):
     if request.method == 'POST':
-        form = AddQuestionForm(request.POST)
-        if form.is_valid():
-            q = Question.objects.create(
-                head=request.POST.get("head"),
-                content=request.POST.get("content"),
-                author=User.objects.get(id=request.user.id),
-                date=timezone.now(),
-            )
+        q = Question.objects.create(
+            head=request.POST.get("head"),
+            content=request.POST.get("content"),
+            author=User.objects.get(id=request.user.id),
+            date=timezone.now(),
+        )
 
-            print (form.cleaned_data.get('tags'))
-            for tag in form.cleaned_data.get('tags'):
-                q.tags.add(tag)
-            q.save()
+        for tag in request.POST.get('tags').split(","):
+            try:
+                tagObj = Tag.objects.get(name=tag)
+            except ObjectDoesNotExist:
+                tagObj = Tag.objects.create(
+                    name=tag,
+                )
 
-            return HttpResponseRedirect("/questions/")
-    else:
-        form = AddQuestionForm()
-    return render(request, 'add_question.html', {
-        'form': form,
-    })
+            q.tags.add(tagObj.pk)
+        q.save()
+
+        return HttpResponseRedirect("/questions/")
+    return render(request, 'add_question.html', {})
 
 
 def question_list(request):
@@ -250,110 +254,55 @@ def question_vl(request, question_id):
         return HttpResponse("")
 
 
-def question_up(request, question_id):
+def question_vote(request, question_id, action):
+    question = Question.objects.get(pk=question_id)
+    user = User.objects.get(pk=request.user.pk)
+
     if request.method == 'POST':
         try:
-            like = QVote.objects.get(question=Question.objects.get(pk=question_id),
-                                     user=User.objects.get(pk=request.user.pk), vote=1)
-            like_num = QVote.objects.filter(question=Question.objects.get(pk=question_id),
-                                            user=User.objects.get(pk=request.user.pk), vote=1).count()
+            vote_object = QVote.objects.get(question=question, user=user)
+            vote = vote_object.vote
         except QVote.DoesNotExist:
-            like_num = 0
-        try:
-            dislike = QVote.objects.get(question=Question.objects.get(pk=question_id),
-                                        user=User.objects.get(pk=request.user.pk), vote=-1)
-            dislike_num = QVote.objects.filter(question=Question.objects.get(pk=question_id),
-                                               user=User.objects.get(pk=request.user.pk), vote=-1).count()
-        except QVote.DoesNotExist:
-            dislike_num = 0
+            vote = 0
 
-        p = Question.objects.get(pk=question_id)
+        if vote == 1:  # you already voted up
+            question.up_votes -= 1
+            if action == 'up':
+                vote_object.delete()
+                question.save()
+            elif action == 'down':
+                vote_object.vote = -1
+                vote_object.save()
+                question.down_votes += 1
+            question.save()
 
-        if dislike_num > 0:  # vote again if dislike exist
-            dislike.delete()
-            QVote.objects.create(question=Question.objects.get(pk=question_id),
-                                 user=User.objects.get(pk=request.user.pk), vote=1)
-            p.votes += 2
-            p.save()
+        elif vote == -1:  # you have voted down
+            question.down_votes -= 1
+            if action == 'up':
+                vote_object.vote = 1
+                vote_object.save()
+                question.up_votes += 1
+            elif action == 'down':
+                vote_object.delete()
+            question.save()
 
-        else:  # vote if dislike didn't exist before
-            if like_num > 0:  # delete like if exists
-                like.delete()
-                p.vote -= 1
-                p.save()
-
-            else:  # add like if it not exists
-                QVote.objects.create(question=Question.objects.get(pk=question_id),
-                                     user=User.objects.get(pk=request.user.pk), vote=1)
-                p.votes += 1
-                p.save()
+        elif vote == 0:  # you haven't voted yet
+            vote_object = QVote.objects.create(
+                question=question,
+                user=user,
+            )
+            if action == 'up':
+                vote_object.vote = 1
+                question.up_votes += 1
+            elif action == 'down':
+                vote_object.vote = -1
+                question.down_votes += 1
+            vote_object.save()
+            question.save()
 
     return HttpResponse("")
 
 
-def answer_up(request, answer_id):
-    return HttpResponse("up")
-
-
-def answer_down(request, answer_id):
-    return HttpResponse("down")
-
-
-def question_down(request, question_id):
-    if request.method == 'POST':
-        try:
-            like = QVote.objects.get(
-                question=Question.objects.get(pk=question_id),
-                user=User.objects.get(pk=request.user.pk),
-                vote=1
-            )
-            like_num = QVote.objects.filter(
-                question=Question.objects.get(pk=question_id),
-                user=User.objects.get(pk=request.user.pk),
-                vote=1
-            ).count()
-        except QVote.DoesNotExist:
-            like_num = 0
-        try:
-            dislike = QVote.objects.get(
-                question=Question.objects.get(pk=question_id),
-                user=User.objects.get(pk=request.user.pk),
-                vote=-1
-            )
-            dislike_num = QVote.objects.filter(
-                question=Question.objects.get(pk=question_id),
-                user=User.objects.get(pk=request.user.pk),
-                vote=-1
-            ).count()
-        except QVote.DoesNotExist:
-            dislike_num = 0
-
-        p = Question.objects.get(pk=question_id)
-
-        if like_num > 0:  # if like exists then vote again
-            like.delete()
-            QVote.objects.create(
-                question=Question.objects.get(pk=question_id),
-                user=User.objects.get(pk=request.user.pk),
-                vote=-1
-            )
-            p.votes -= 2
-            p.save()
-        else:  # vote if like didn't exist
-            if dislike_num > 0:  # remove dislike
-                dislike.delete()
-                p.votes += 1
-                p.save()
-            else:
-                QVote.objects.create(
-                    question=Question.objects.get(pk=question_id),
-                    user=User.objects.get(pk=request.user.pk),
-                    vote=-1
-                )
-                p.votes -= 1
-                p.save()
-
-    return HttpResponse("")
 
 
 def question(request, question_id):
@@ -401,6 +350,7 @@ def question(request, question_id):
     return render(request, 'question.html', {
         'user': request.user,
         'question': question,
+        'post_votes': question.up_votes-question.down_votes,
         'answers': answers,
         'answer_list': answer_list,
         'form_add': AddAnswerForm(),

@@ -37,15 +37,15 @@
 
             <div class="bm-button__count">x<span>{{bm_num}}</span></div>
         </div>
+
+        <div class="votes-block" type="{% if q %}question{% elif a %}answer{% endif %}" id="{{ post.pk }}">
+
+            <a class="vote-up vote-button{% if user_vote == 1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-up"></i></a>
+
+            <span class="votes-number" votes="{{ post_votes }}">{{ post_votes }}</span>
+
+            <a class="vote-down vote-button{% if user_vote == -1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-down"></i></a>
+        </div>
     {% endif %}
-
-    <div class="votes-block" type="{% if q %}question{% elif a %}answer{% endif %}" id="{{ post.pk }}">
-
-        <a class="vote-up vote-button{% if user_vote == 1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-up"></i></a>
-
-        <span class="votes-number" votes="{{ post.votes }}">{{ post.votes }}</span>
-
-        <a class="vote-down vote-button{% if user_vote == -1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-down"></i></a>
-    </div>
 
 </div>

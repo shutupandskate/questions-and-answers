@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
-{%block content%}
+{% block statics %}
+    <script type="text/javascript" src="/js/bootstrap-tagsinput.min.js"></script>
+    <link href="/css/bootstrap-tagsinput.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
     {% if not user.is_anonymous %}
         <h3>Add new question:</h3>
         {% if form.subject.errors %}
@@ -11,11 +16,20 @@
 
         <form  method="post" action="/questions/add/" id="question">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-inverse" type="submit" name="submit" value="Send" />
+            <div>
+                <input id="id_head" type="text" name="head" maxlength="50" placeholder="Title" />
+            </div>
+            <div>
+                <textarea id="id_content" rows="10" name="content" cols="40" placeholder="Your question"></textarea>
+            </div>
+            <p><i>Separate tags with comma</i></p>
+            <div>
+                <input id="id_tags" data-role="tagsinput" name="tags" type="text">
+            </div>
+            <input class="btn btn-inverse" type="submit" value="Send" />
         </form>
 
-    {%else%}
+    {% else %}
         <div>
             <h3>Sorry</h3>
             <div>
@@ -23,6 +37,6 @@
                 <p>You're welcomed to <a href="/account/login/">log in</a> or <a href="/account/register/">register</a>.</p>
             </div>
         </div>
-    {%endif%}
-{%endblock%}
+    {% endif %}
+{% endblock %}
 

@@ -14,7 +14,7 @@ $(document).ready(function(){
     });
 
     upButtons.on("click", function(){
-        console.log(this);
+        //console.log(this);
         vote(this, "up");
     });
 
@@ -65,13 +65,13 @@ $(document).ready(function(){
         var type = button.parent().attr("type"); // answer or question
         var id = button.parent().attr("id"); // id of answer or question
 
-        console.log(type)
+        console.log(button, type, id);
 
         var votesNumberBlock = $(button.parent().find(".votes-number"));
         var upButton = $(button.parent().find(".vote-up"));
         var downButton = $(button.parent().find(".vote-down"));
 
-        var url = "/" + type + "/" + id + "/";
+        var url = "/" + type + "/" + id + "/vote/";
         url = (action == "up") ? url + "up/" : url + "down/";
         var pressed = "vote-button_pressed";
         var diff = 0;
@@ -88,31 +88,37 @@ $(document).ready(function(){
                     if(upButton.hasClass(pressed)) {
                         upButton.removeClass(pressed);
                         diff = -1;
+                        console.log("1");
                     } else if(downButton.hasClass(pressed)){
                         downButton.removeClass(pressed);
                         upButton.addClass(pressed);
                         diff = 2;
+                        console.log("2");
                     } else {
                         upButton.addClass(pressed);
                         diff = 1;
+                        console.log("3");
                     }
                 } else if(action == 'down') {
                     if(downButton.hasClass(pressed)) {
                         downButton.removeClass(pressed);
                         diff = 1;
+                        console.log("4");
                     } else if(upButton.hasClass(pressed)) {
                         upButton.removeClass(pressed);
                         downButton.addClass(pressed);
                         diff = -2;
+                        console.log("5");
                     } else {
                         downButton.addClass(pressed);
                         diff = -1;
+                        console.log("6");
                     }
                 }
                 votesNumberBlock.text(parseInt(votesNumberBlock.text()) + diff);
             },
             error: function(xhr, data) {
-                alert('Please, log in for this operation');
+                //alert('Please, log in for this operation');
             }
         });
     }
@@ -149,9 +155,9 @@ $(document).ready(function(){
                         "</div>" +
                         "<p>" + content + "</p>" +
                         "<div class='clearfix'></div>" +
-                        "<hr>"
                     "</div>";
                 $("#answer-list").append(answer);
+                $("#id_content").val('');
             }
         });
     }

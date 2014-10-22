@@ -41,7 +41,9 @@
                 {% if asked_num > 0 %}
                     <h4>Questions ({{ asked_num }} in total)</h4>
                     {% for question in questions %}
-                        <a href="/question/{{ question.pk }}">{{ question.head }}</a><hr>
+                        <li>
+                            <a href="/question/{{ question.pk }}">{{ question.head }}</a>
+                        </li>
                     {% endfor %}
                     <a class="see-all" href="/user/{{ pageUser.pk }}/q/">see all</a>
                 {% else %}
@@ -53,7 +55,9 @@
                 {% if bm_num != 0 %}
                     <h4>Bookmarks ({{ bm_num }} in total)</h4>
                     {% for bookmark in bookmarks %}
-                        <a href="/question/{{ bookmark.question.pk }}/">{{ bookmark.question.head }}</a><hr/>
+                        <li>
+                            <a href="/question/{{ bookmark.question.pk }}/">{{ bookmark.question.head }}</a>
+                        </li>
                     {% endfor %}
                     <a class="see-all" href="/user/{{ pageUser.pk }}/bm/">see all</a>
                 {% else %}
