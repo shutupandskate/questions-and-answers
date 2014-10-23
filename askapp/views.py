@@ -181,6 +181,8 @@ def add_question(request):
 
 def questions_list(request):
     question_list = Question.objects.all().order_by("-date")
+    for question in question_list:
+        question.votes = question.up_votes - question.down_votes
     paginator = Paginator(question_list, 10)
     page = request.GET.get('page')
     try:

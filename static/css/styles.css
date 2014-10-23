@@ -49,7 +49,7 @@ textarea {
 .user-activity li {
     list-style: none;
     padding: 7px 0;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #ddd;
 }
 /* user profile end */
 
@@ -83,6 +83,13 @@ textarea {
     height: 50px;
     padding: 5px;
     margin: 5px;
+    background-color: #ddd;
+    color: #545454;
+    border-radius: 1px;
+}
+.question-list__button:hover{
+    text-decoration: none;
+    color: #999;
 }
 .question-list__desc {
     float: left;
@@ -181,7 +188,7 @@ textarea {
 }
 
 .answer-list__item {
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #ddd;
     padding: 10px 0;
 }
 

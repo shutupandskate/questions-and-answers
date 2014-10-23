@@ -7,15 +7,15 @@
 {% endif %}
 
 <div class="question-list__item">
-    <a href="/question/{{ object.pk }}/" class="question-list__button btn btn-inverse">
+    <a href="/question/{{ object.pk }}/" class="question-list__button">
         <div>{{ object.answer_set.count }}</div>
         <div>answers</div>
     </a>
-    <a href="/question/{{ object.pk }}/" class="question-list__button btn btn-inverse">
+    <a href="/question/{{ object.pk }}/" class="question-list__button">
         <div>{{ object.votes }}</div>
         <div>votes</div>
     </a>
-    <a href="/question/{{ object.pk }}/" class="question-list__button btn btn-inverse">
+    <a href="/question/{{ object.pk }}/" class="question-list__button">
         <div>{{ object.questionview_set.count }}</div>
         <div>views</div>
     </a>
