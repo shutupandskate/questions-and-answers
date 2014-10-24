@@ -89,7 +89,8 @@ textarea {
 }
 .question-list__button:hover{
     text-decoration: none;
-    color: #999;
+    color: #fff;
+    background-color: #545454;
 }
 .question-list__desc {
     float: left;
