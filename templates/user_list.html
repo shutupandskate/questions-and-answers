@@ -8,9 +8,11 @@
 {%block content%}
     <h2>Last joined users</h2>
 
-    {% for a_count, q_count, username, first_name, last_name, pk in users %}
-        {% include 'includes/user_card.tmpl' %}
-    {% endfor %}
+    <div class="user-list">
+        {% for a_count, q_count, username, first_name, last_name, pk in users %}
+            {% include 'includes/user_card.tmpl' %}
+        {% endfor %}
+    </div>
 
     {% include 'includes/pagination.tmpl' with objectName="users" %}
 {%endblock%}

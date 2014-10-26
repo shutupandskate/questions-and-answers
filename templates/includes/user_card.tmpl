@@ -5,11 +5,11 @@
     <div class="user-card__info">
         <ul>
             <li>
-            {% if first_name %}
-                <a href="/user/{{ pk }}">{{ first_name }}&nbsp;{{ last_name }}</a>
-            {% else %}
-                <a href="/user/{{ pk }}">{{ username }}</a>
-            {% endif %}
+                {% if first_name %}
+                    <a href="/user/{{ pk }}">{{ first_name }}&nbsp;{{ last_name }}</a>
+                {% else %}
+                    <a href="/user/{{ pk }}">{{ username }}</a>
+                {% endif %}
             </li>
             <li>
                 <a href="/user/{{ pk }}/q">{{ q_count }} questions</a>
@@ -23,7 +23,7 @@
 
     <div class="user-card__image">
         <a href="/user/{{ pk }}">
-            <img src="{% static '/img/pic.jpeg' %}"></img>
+            <img src="{% static '/img/pic.jpeg' %}"/>
         </a>
     </div>
     <div class="clearfix"></div>

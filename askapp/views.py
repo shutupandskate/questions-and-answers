@@ -35,10 +35,10 @@ def main(request):
     size = Tag.objects.annotate(count=Count('questions')).values_list('count', flat=True)
     knowing_users = User.objects.annotate(a_count=Count('answer', distinct=True)).annotate(
         q_count=Count('question', distinct=True)).values_list('a_count', 'q_count', 'username', 'first_name',
-                                                              'last_name', 'pk').order_by('-a_count')[:4]
+                                                              'last_name', 'pk').order_by('-a_count')[:6]
     curious_users = User.objects.annotate(q_count=Count('question', distinct=True)).annotate(
         a_count=Count('answer', distinct=True)).values_list('q_count', 'a_count', 'username', 'first_name', 'last_name',
-                                                            'pk').order_by('-q_count')[:4]
+                                                            'pk').order_by('-q_count')[:6]
 
     return render_to_response('main.html', {
         'size': size,
@@ -137,8 +137,9 @@ def user_bookmarks(request, user_id):
 
 
 def users_list(request):
-    user_list = User.objects.all().order_by("-date_joined").annotate(a_count=Count('answer')).annotate(
-        q_count=Count('question')).values_list('a_count', 'q_count', 'username', 'first_name', 'last_name', 'pk')
+    user_list = User.objects.annotate(a_count=Count('answer', distinct=True)).annotate(
+        q_count=Count('question', distinct=True)).values_list('a_count', 'q_count', 'username', 'first_name',
+                                                              'last_name', 'pk').order_by("-date_joined")
 
     paginator = Paginator(user_list, 32)
     page = request.GET.get('page')
@@ -240,7 +241,7 @@ def bookmark_question(request, question_id):
 
 
 # def question_vl(request, question_id):
-#     question_obj = get_object_or_404(Question, pk=question_id)
+# question_obj = get_object_or_404(Question, pk=question_id)
 #
 #     if request.user == question_obj.author:
 #         if request.method == 'POST':
@@ -348,7 +349,7 @@ def question_page(request, question_id):
     return render(request, 'question.html', {
         'user': request.user,
         'question': question,
-        'post_votes': question.up_votes-question.down_votes,
+        'post_votes': question.up_votes - question.down_votes,
         'answers': answers,
         'answer_list': answer_list,
         'form_add': AddAnswerForm(),
