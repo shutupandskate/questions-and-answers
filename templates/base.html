@@ -17,26 +17,26 @@
     </head>
 
     <body>
-        <div class="navbar navbar-inverse navbar-static-top">
-            <div class="navbar-inner">
-                <a class="brand" href="/">main</a>
-                <ul class="nav">
-                    <li><a href="/questions/add/">ask</a></li>
-                    <li><a href="/questions/">answer</a></li>
-                    <li><a href="/users/">users</a></li>
-                    <li><a href="/tags/">tags</a></li>
-                    <li><a href="#">search</a></li>
-                </ul>
-                {% include 'includes/user_block.tmpl' %}
+        <div class="header">
+            <div class="container">
+                <nav class="blog-nav">
+                    <a class="blog-nav-item{% if request.path == '/' %} active{% endif %}" href="/">main</a>
+                    <a class="blog-nav-item{% if request.path == '/questions/add/' %} active{% endif %}" href="/questions/add/">ask</a>
+                    <a class="blog-nav-item{% if request.path == '/questions/' %} active{% endif %}" href="/questions/">answer</a>
+                    <a class="blog-nav-item{% if request.path == '/users/' %} active{% endif %}" href="/users/">users</a>
+                    <a class="blog-nav-item{% if request.path == '/tags/' %} active{% endif %}" href="/tags/">tags</a>
+                    <a class="blog-nav-item" href="#">search</a>
+                    {% include 'includes/user_block.tmpl' %}
+                </nav>
             </div>
         </div>
 
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span8 offset1 content-area">{% block content %}{% endblock %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 blog-main content-area">{% block content %}{% endblock %}
                 </div>
 
-                <div class="span3">
+                <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
                     <h4>Newcomers</h4>
                     {% show_users %}
                     <h4>Popular tags</h4>
@@ -46,7 +46,6 @@
                 </div>
             </div>
         </div>
-
 
         <!--DEBUG-->
         <div class="clearfix"></div>
