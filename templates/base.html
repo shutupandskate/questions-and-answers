@@ -19,30 +19,29 @@
     <body>
         <div class="header">
             <div class="container">
-                <nav class="blog-nav">
-                    <a class="blog-nav-item{% if request.path == '/' %} active{% endif %}" href="/">main</a>
-                    <a class="blog-nav-item{% if request.path == '/questions/add/' %} active{% endif %}" href="/questions/add/">ask</a>
-                    <a class="blog-nav-item{% if request.path == '/questions/' %} active{% endif %}" href="/questions/">answer</a>
-                    <a class="blog-nav-item{% if request.path == '/users/' %} active{% endif %}" href="/users/">users</a>
-                    <a class="blog-nav-item{% if request.path == '/tags/' %} active{% endif %}" href="/tags/">tags</a>
-                    <a class="blog-nav-item" href="#">search</a>
-                    {% include 'includes/user_block.tmpl' %}
+                <nav class="nav">
+                    <a class="nav-item{% if request.path == '/' %} active{% endif %}" href="/">main</a>
+                    <a class="nav-item{% if request.path == '/questions/add/' %} active{% endif %}" href="/questions/add/">ask</a>
+                    <a class="nav-item{% if request.path == '/questions/' %} active{% endif %}" href="/questions/">answer</a>
+                    <a class="nav-item{% if request.path == '/users/' %} active{% endif %}" href="/users/">users</a>
+                    <a class="nav-item{% if request.path == '/tags/' %} active{% endif %}" href="/tags/">tags</a>
+                    <a class="nav-item" href="#">search</a>
+                    {% include 'includes/login_block.tmpl' %}
                 </nav>
             </div>
         </div>
 
         <div class="container">
             <div class="row">
-                <div class="col-sm-8 blog-main content-area">{% block content %}{% endblock %}
+                <div class="col-sm-9">
+                    {% block content %}{% endblock %}
                 </div>
 
-                <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-                    <h4>Newcomers</h4>
+                <div class="col-sm-3 sidebar">
+                    <h3>Newcomers</h3>
                     {% show_users %}
-                    <h4>Popular tags</h4>
+                    <h3>Popular tags</h3>
                     {% show_tags %}
-
-                    {% block right_sidebar %}{% endblock %}
                 </div>
             </div>
         </div>

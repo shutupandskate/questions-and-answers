@@ -1,0 +1,9 @@
+{% if not user.is_anonymous %}
+    <span class="nav-item nav-item__login">
+        you're logged as <a href="/user/{{ user.pk }}/">{{ user }}</a> (<a href="/account/logout/">log out</a>)
+    </span>
+{% else %}
+    <span class="nav-item nav-item__login">
+        please <a href="/account/login/">log in</a> or <a href="/account/register/">register</a>
+    </span>
+{% endif %}

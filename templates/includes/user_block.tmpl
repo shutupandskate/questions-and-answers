@@ -1,5 +1,0 @@
-{% if not user.is_anonymous %}
-    <span class="blog-nav-item header__user-block">you're logged as <a href="/user/{{ user.pk }}/">{{ user }}</a> (<a href="/account/logout/">log out</a>)</span>
-{% else %}
-    <span class="blog-nav-item header__user-block">please <a href="/account/login/">log in</a> or <a href="/account/register/">register</a>.</span>
-{% endif %}

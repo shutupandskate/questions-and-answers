@@ -2,34 +2,41 @@
 {% block title %}Questions and answers{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <h3>Hot tags</h3>
-        <div class="span11">
-            {% if tag_list %}{% include 'includes/tag_cloud.tmpl' %}{% endif %}
-            <a href="/tags/" class="see-all">see all</a>
+        <h2>Hot tags</h2>
+        <div class="col-sm-12">
+            {% if tag_list %}
+                {% include 'includes/tag_cloud.tmpl' %}
+                <div class="clearfix"></div>
+                <a href="/tags/" class="see-all">see all</a>
+            {% else %}
+                <h4>Be first to <a href="/question/add">ask question</a> and create a tag.</h4>
+            {% endif %}
         </div>
-        <div class="clearfix"></div>
 
-        <h3>Know-alls</h3>
-        <div class="span11">
-            {% for a_count, q_count, username, first_name, last_name, pk in knowing_users %}
-                {% include 'includes/user_card.tmpl' %}
-            {% endfor %}
-            <a href="/users/" class="see-all">see all</a>
+        <h2>Know-alls</h2>
+        <div class="col-sm-12">
+            {% if knowing_users %}
+                {% for a_count, q_count, username, first_name, last_name, pk in knowing_users %}
+                    {% include 'includes/user_card.tmpl' %}
+                {% endfor %}
+                <div class="clearfix"></div>
+                <a href="/users/" class="see-all">see all</a>
+            {% else %}
+                <h4>Become first and <a href="/register/">register</a>.</h4>
+            {% endif %}
         </div>
-        <div class="clearfix"></div>
 
-        <h3>Most curious</h3>
-        <div class="span11">
-            <div class="row-fluid">
+        <h2>Most curious</h2>
+        <div class="col-sm-12">
+            {% if curious_users %}
                 {% for q_count, a_count, username, first_name, last_name, pk in curious_users %}
                     {% include 'includes/user_card.tmpl' %}
                 {% endfor %}
-            </div>
-
-            <a href="/users/" class="see-all">see all</a>
+                <div class="clearfix"></div>
+                <a href="/users/" class="see-all">see all</a>
+            {% else %}
+                <h4>Become first and <a href="/register/">register</a>.</h4>
+            {% endif %}
         </div>
-        <div class="clearfix"></div>
 
-    </div>
 {% endblock %}

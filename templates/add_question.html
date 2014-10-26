@@ -7,30 +7,32 @@
 
 {% block content %}
     {% if not user.is_anonymous %}
-        <h3>Add new question:</h3>
-        {% if form.subject.errors %}
-            <div class="error">
-                <p>Ooops..! Seems that something is wrong! Check your data and submit again, please.</p>
-            </div>
-        {% endif %}
+        <div class="col-sm-10">
+            <h3>Add new question:</h3>
+            {% if form.subject.errors %}
+                <div class="error">
+                    <p>Ooops..! Seems that something is wrong! Check your data and submit again, please.</p>
+                </div>
+            {% endif %}
 
-        <form  method="post" action="/questions/add/" id="question">
-            {% csrf_token %}
-            <div>
-                <input id="id_head" type="text" name="head" maxlength="50" placeholder="Title" />
-            </div>
-            <div>
-                <textarea id="id_content" rows="10" name="content" cols="40" placeholder="Your question"></textarea>
-            </div>
-            <p><i>Separate tags with comma</i></p>
-            <div>
-                <input id="id_tags" data-role="tagsinput" name="tags" type="text">
-            </div>
-            <input id="add-question__submit" class="btn btn-primary" type="submit" value="Send" />
-            <div id="validity-error" class="validity-error"><i>Make sure you filled all fields.</i></div>
-            <div class="clearfix"></div>
-        </form>
-        <script type="text/javascript" src="/js/add_question.js"></script>
+            <form  method="post" action="/questions/add/" id="question" role="form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input id="id_head" type="text" name="head" class="form-control" maxlength="50" placeholder="Title" />
+                </div>
+                <div class="form-group">
+                    <textarea id="id_content" rows="10" name="content" cols="40" class="form-control" placeholder="Your question"></textarea>
+                </div>
+                <p><i>Separate tags with comma</i></p>
+                <div class="form-group">
+                    <input id="id_tags" class="form-control" data-role="tagsinput" name="tags" type="text">
+                </div>
+                <input id="add-question__submit" class="btn btn-primary" type="submit" value="Send" />
+                <div id="validity-error" class="validity-error"><i>Make sure you filled all fields.</i></div>
+                <div class="clearfix"></div>
+            </form>
+            <script type="text/javascript" src="/js/add_question.js"></script>
+        </div>
 
     {% else %}
         <div>

@@ -6,7 +6,7 @@
 {% block title %}Users{% endblock %}
 
 {%block content%}
-    <h3>Last joined users</h3>
+    <h2>Last joined users</h2>
 
     {% for a_count, q_count, username, first_name, last_name, pk in users %}
         {% include 'includes/user_card.tmpl' %}

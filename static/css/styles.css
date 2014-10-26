@@ -1,8 +1,3 @@
-h1, h2, h3, h4 {
-    margin: 0;
-    padding: 0;
-}
-
 .clearfix {
     clear: both;
 }
@@ -128,6 +123,9 @@ textarea {
     text-align: center;
     line-height: 26px;
 }
+.tag-list {
+    text-align: center;
+}
 /* tag_cloud end */
 
 /*
@@ -161,10 +159,11 @@ textarea {
     color: #08c;
     font-size: 25px;
     line-height: 28px;
-    display: block;
     text-align: center;
     display: inline-block;
 }
+/* votes end */
+
 /* bookmark */
 .bookmark-block {
     position: absolute;
@@ -178,6 +177,7 @@ textarea {
     display: inline-block;
     margin: 4px 0;
 }
+/* bookmark end */
 
 .question-post h3 {
     margin: 0;
@@ -193,6 +193,8 @@ textarea {
 
 .label-info, .badge-info {
     background-color:#545454;
+    position: relative;
+    bottom: 2px;
 }
 
 .validity-error {
@@ -205,16 +207,6 @@ textarea {
     float: left;
 }
 
-
-
-
-
-
-.header__user-block {
-    float: right;
-}
-
-
 @media (min-width: 1200px) {
   .container {
     width: 970px;
@@ -225,12 +217,10 @@ textarea {
   .menu-login {
     display: none;
   }
-  .blog-sidebar {
+  .sidebar {
     display: none;
   }
 }
-
-
 
 .header {
   background-color: #000;
@@ -239,25 +229,29 @@ textarea {
   min-width: 760px;
 }
 
-/* Nav links */
-.blog-nav-item {
+/* Nav */
+.nav-item {
   position: relative;
   display: inline-block;
   padding: 10px;
   font-weight: 500;
   color: #cdddeb;
 }
-.blog-nav-item:hover,
-.blog-nav-item:focus {
+.nav-item:hover,
+.nav-item:focus {
   color: #fff;
   text-decoration: none;
 }
 
-.blog-nav-item.active {
+.nav-item.active {
     text-shadow: 1px 1px 2px #fff
 }
 
-/* Active state gets a caret at the bottom */
+.nav-item__login {
+    float: right;
+}
+
 .blog-nav .active {
   color: #fff;
 }
+/* nav */
