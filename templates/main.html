@@ -3,7 +3,7 @@
 
 {% block content %}
         <h2>Hot tags</h2>
-        <div class="col-sm-12">
+        <div class="col-sm-12 tag-list-block">
             {% if tag_list %}
                 {% include 'includes/tag_cloud.tmpl' %}
                 <div class="clearfix"></div>
@@ -14,7 +14,7 @@
         </div>
 
         <h2>Know-alls</h2>
-        <div class="col-sm-12">
+        <div class="user-list-block">
             {% if knowing_users %}
                 {% for a_count, q_count, username, first_name, last_name, pk in knowing_users %}
                     {% include 'includes/user_card.tmpl' %}
@@ -27,7 +27,7 @@
         </div>
 
         <h2>Most curious</h2>
-        <div class="col-sm-12">
+        <div class="user-list-block">
             {% if curious_users %}
                 {% for q_count, a_count, username, first_name, last_name, pk in curious_users %}
                     {% include 'includes/user_card.tmpl' %}

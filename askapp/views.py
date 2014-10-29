@@ -35,10 +35,10 @@ def main(request):
     size = Tag.objects.annotate(count=Count('questions')).values_list('count', flat=True)
     knowing_users = User.objects.annotate(a_count=Count('answer', distinct=True)).annotate(
         q_count=Count('question', distinct=True)).values_list('a_count', 'q_count', 'username', 'first_name',
-                                                              'last_name', 'pk').order_by('-a_count')[:6]
+                                                              'last_name', 'pk').order_by('-a_count')[:8]
     curious_users = User.objects.annotate(q_count=Count('question', distinct=True)).annotate(
         a_count=Count('answer', distinct=True)).values_list('q_count', 'a_count', 'username', 'first_name', 'last_name',
-                                                            'pk').order_by('-q_count')[:6]
+                                                            'pk').order_by('-q_count')[:8]
 
     return render_to_response('main.html', {
         'size': size,
@@ -55,7 +55,7 @@ def user_page(request, user_id):
     answ_num = Answer.objects.filter(author__username=user.username).count()
     answers = Answer.objects.filter(author__username=user.username).values('question__pk', 'question__head',
                                                                            'question__content', ).distinct()[:5]
-    taglist = Tag.objects.filter(questions__author__id=user_id)[:20]
+    taglist = Tag.objects.filter(questions__author__id=user_id)[:5]
     size = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',
                                                                                                             flat=True)[
            :20]
@@ -64,7 +64,7 @@ def user_page(request, user_id):
     bookmarks = Bookmark.objects.filter(user_id=user_id)[:5]
 
     return render_to_response('user.html', {
-        'pageUser': user,
+        'page_user': user,
         'asked_num': asked_num,
         'questions': questions,
         'answ_num': answ_num,
@@ -77,8 +77,8 @@ def user_page(request, user_id):
 
 
 def user_question_list(request, user_id):
-    pageUser = get_object_or_404(User, pk=user_id)
-    asked_num = Question.objects.filter(author__username=pageUser.username).count()
+    page_user = get_object_or_404(User, pk=user_id)
+    asked_num = Question.objects.filter(author__username=page_user.username).count()
     taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name',
                                                                        'questions__tags__pk').distinct()[:20]
     sizelist = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',
@@ -86,7 +86,9 @@ def user_question_list(request, user_id):
                :20]
     tslist = zip(taglist, sizelist)
 
-    question_list = Question.objects.filter(author__username=pageUser.username).order_by("-date")
+    question_list = Question.objects.filter(author__username=page_user.username).order_by("-date")
+    for question in question_list:
+        question.votes = question.up_votes - question.down_votes
     paginator = Paginator(question_list, 30)
     page = request.GET.get('page')
     try:
@@ -98,27 +100,24 @@ def user_question_list(request, user_id):
 
     return render(request, 'user_q.html', {
         'questions': questions,
-        'pageUser': pageUser,
+        'page_user': page_user,
         'asked_num': asked_num,
         'tslist': tslist
     }, context_instance=RequestContext(request))
 
 
 def user_bookmarks(request, user_id):
-    pageUser = get_object_or_404(User, pk=user_id)
-    answ_num = Answer.objects.filter(author__username=pageUser.username).count()
-    taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name',
-                                                                       'questions__tags__pk').distinct()[:20]
-    sizelist = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',
-                                                                                                                flat=True)[
-               :20]
-    tslist = zip(taglist, sizelist)
+    page_user = get_object_or_404(User, pk=user_id)
+    user = User.objects.get(pk=user_id)
+    bookmark_list = Bookmark.objects.filter(user=user)
+    bm_num = bookmark_list.count()
 
-    bookmark_list = Bookmark.objects.filter(user=User.objects.get(pk=user_id))
-    bm_num = Bookmark.objects.filter(user=User.objects.get(pk=user_id)).count()
+    for bm in bookmark_list:
+        bm.question.votes = bm.question.up_votes - bm.question.down_votes
 
     paginator = Paginator(bookmark_list, 30)
     page = request.GET.get('page')
+
     try:
         questions = paginator.page(page)
     except PageNotAnInteger:
@@ -127,11 +126,9 @@ def user_bookmarks(request, user_id):
         questions = paginator.page(paginator.num_pages)
 
     return render(request, 'user_bm.html', {
-        'pageUser': pageUser,
-        'answ_num': answ_num,
+        'page_user': page_user,
         'questions': questions,
         'bookmark_list': bookmark_list,
-        'tslist': tslist,
         'bm_num': bm_num
     })
 
@@ -200,13 +197,13 @@ def questions_list(request):
 
 def tag_page(request, tag_id):
     tag_obj = get_object_or_404(Tag, pk=tag_id)
-    tag_list = Tag.objects.all()
-    question_list = Question.objects.filter(tags__pk=tag_id).order_by("-date")
+    question_list = Question.objects.filter(tags__pk=tag_id).order_by("-date")[:20]
+    for question in question_list:
+        question.votes = question.up_votes - question.down_votes
     size = Question.objects.filter(tags__pk=tag_id).count()
 
     return render_to_response('tag.html', {
         'tag': tag_obj,
-        'tag_list': tag_list,
         'question_list': question_list,
         'size': size,
     }, context_instance=RequestContext(request))
@@ -238,21 +235,6 @@ def bookmark_question(request, question_id):
             )
             b.save()
         return HttpResponse("")
-
-
-# def question_vl(request, question_id):
-# question_obj = get_object_or_404(Question, pk=question_id)
-#
-#     if request.user == question_obj.author:
-#         if request.method == 'POST':
-#             if request.POST.get('a_id'):
-#                 a = Answer.objects.get(pk=request.POST.get('a_id'))
-#                 if not a.validity:
-#                     a.validity = True
-#                 else:
-#                     a.validity = False
-#                 a.save()
-#         return HttpResponse("")
 
 
 @require_POST
@@ -307,7 +289,6 @@ def vote_for_question(request, question_id, action):
 def question_page(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
-    # ## VIEWS
     if not QuestionView.objects.filter(question=question, session=request.session.session_key):
         view = QuestionView(
             question=question,

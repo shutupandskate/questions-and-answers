@@ -6,7 +6,7 @@
 
 
 {% block userdata %}
-    <h3>Questions by {{ pageUser.username }}</h3>
+    <h2>Questions by {{ page_user.username }}</h2>
     {% for question in questions %}
         {% include 'includes/question_list_item.tmpl' %}
     {% endfor %}

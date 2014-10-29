@@ -11,35 +11,25 @@ textarea {
     /*min-width: 700px;
 */}
 /* user profile */
-.user-activity__info {
-    margin-top: 20px;
-    float: left;
-}
-.user-activity {
-    margin-top: 20px;
-}
-.user-activity h4 {
-    margin-bottom: 10px;
-}
-.user-activity .row {
-    margin-top: 10px;
+.user-activity__info td{
+    padding-right: 20px;
 }
 .user-activity__tags {
-    float: right;
     margin-top: 20px;
 }
 .user-activity__tags span {
-    color: #808080;
-    font-size: 13px;
-    margin-left: 4px;
+    color: #fff;
 }
-
 .user-activity li {
     list-style: none;
     padding: 7px 0;
     border-bottom: 1px solid #ddd;
 }
 /* user profile end */
+
+.user-list-block, .tag-list-block {
+    min-width: 700px;
+}
 
 /* main */
 .see-all {
@@ -63,6 +53,8 @@ textarea {
 /* question list */
 .question-list__item {
     width: 100%;
+    display: inline-block;
+    white-space: nowrap;
 }
 .question-list__button {
     float: left;
@@ -82,16 +74,15 @@ textarea {
     background-color: #545454;
 }
 .question-list__desc {
-    float: left;
     padding: 5px 0 0 10px;
-    max-width: 500px;
+    max-width: 470px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .question-link {
     display: inline;
-    max-width: 500px;
+    max-width: 470px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 /* question list end */
 
@@ -128,6 +119,7 @@ textarea {
 }
 /* tag_cloud end */
 
+.tag-question-list,
 .user-list {
     min-width: 540px;
 }
@@ -138,17 +130,21 @@ textarea {
 /*votes*/
 .user-block {
     position: relative;
-    width: 260px;
-    height: 100px;
+    width: 300px;
     float: right;
-    padding: 10px;
-    margin-top: 20px;
+    padding: 5px;
+    margin-left: 5px;
+}
+.user-block_answer {
+    width: 200px;
+}
+.text-block {
+    float: left;
+    padding: 5px;
 }
 .votes-block {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 10px;
+    float: right;
+    padding: 5px;
 }
 .vote-button {
     cursor: pointer;
@@ -170,10 +166,8 @@ textarea {
 
 /* bookmark */
 .bookmark-block {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 10px;
+    float: left;
+    padding: 5px;
 }
 .bm-button__count, .show-tags__count {
     font-size: 13px;
@@ -181,13 +175,20 @@ textarea {
     display: inline-block;
     margin: 4px 0;
 }
+.marked {
+    background-color: #e6e6e6;
+}
 /* bookmark end */
-
+.question-post {
+    min-width: 470px;
+}
 .question-post h3 {
     margin: 0;
     display: inline;
 }
-
+#answer-list {
+    min-width: 470px;
+}
 .answer-list__item {
     border-bottom: 1px solid #ddd;
     padding: 10px 0;
@@ -253,6 +254,7 @@ textarea {
 
 .nav-item__login {
     float: right;
+    color: #fff;
 }
 
 .blog-nav .active {

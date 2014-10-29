@@ -24,7 +24,9 @@ $(document).ready(function(){
 
     sendAnswerButton.on("click", function(e){
         e.preventDefault();
-        addAnswer(this);
+        if($('#id_content').val()) {
+            addAnswer(this);
+        }
     });
 
 
@@ -143,7 +145,7 @@ $(document).ready(function(){
 
                 var answer =
                     "<div class='answer-list__item'>" +
-                        "<div class='user-block thumbnail'>" +
+                        "<div class='user-block user-block_answer thumbnail'>" +
                             "<div class='text-block'>" +
                                 "<div class='text-block__item'>" +
                                     "author <b>you</b>" +

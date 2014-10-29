@@ -12,11 +12,13 @@
 
 
     <div class="question-post">
-        <h3>{{question.head}}</h3>
+        <h2>{{ question.head }}</h2>
+
         {% include 'includes/entry_card.tmpl' with type="question" %}
-        <div>{{question.content}}</div>
+
+        <div>{{ question.content }}</div>
         {%for tag in question.tags.all %}
-            <a href="/tag/{{tag.pk}}/"><span class="badge badge-inverse">{{tag}}</span></a>
+            <a href="/tag/{{ tag.pk }}/"><span class="badge badge-inverse">{{ tag }}</span></a>
         {% endfor %}
         <div class="clearfix"></div>
     </div>

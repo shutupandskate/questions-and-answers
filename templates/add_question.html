@@ -8,7 +8,7 @@
 {% block content %}
     {% if not user.is_anonymous %}
         <div class="col-sm-10">
-            <h3>Add new question:</h3>
+            <h2>Add new question:</h2>
             {% if form.subject.errors %}
                 <div class="error">
                     <p>Ooops..! Seems that something is wrong! Check your data and submit again, please.</p>
@@ -38,7 +38,7 @@
 
     {% else %}
         <div>
-            <h3>Sorry</h3>
+            <h2>Sorry</h2>
             <div>
                 <p>Anonymous users have no ability to ask questions here.</p>
                 <p>You're welcomed to <a href="/account/login/">log in</a> or <a href="/account/register/">register</a>.</p>

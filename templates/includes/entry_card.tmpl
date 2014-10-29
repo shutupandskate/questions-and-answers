@@ -8,7 +8,7 @@
     {% set a = True %}
 {% endif %}
 
-<div class="user-block thumbnail">
+<div class="user-block{% if a %} user-block_answer{% endif %} thumbnail">
     <div class="text-block">
         <div class="text-block__item">
             author 
@@ -27,11 +27,12 @@
             <div class="text-block__item">viewed <b>{{ views }}</b></div>
         {% endif %}
     </div>
+    <div class="clearfix"></div>
 
     {% if q %}
         <div class="bookmark-block">
-            <button id="bm-button" class="btn btn-small{% if bm %} btn-inverse marked{% endif %}" bm_num="{{ bm_num }}" q_id="{{ post.pk }}">
-                <i class="icon-bookmark{% if bm %} icon-white{% else %} icon-black{% endif %}"></i>
+            <button id="bm-button" class="btn btn-default{% if bm %} marked{% endif %}" bm_num="{{ bm_num }}" q_id="{{ post.pk }}">
+                <i class="glyphicon glyphicon-bookmark"></i>
                 <span>bookmark{% if bm %}ed{% endif %}</span>
             </button>
 
