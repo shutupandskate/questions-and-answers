@@ -4,14 +4,16 @@
 {% block title %}{{ page_user.username }} profile{% endblock %}
 
 {% block content %}
-    <div class="col-sm-12">
+    <div class="col-md-12">
         <div class="user-activity__info">
             <h2>
-                {% if page_user.first_name or page_user.last_name %}
-                    {{ page_user.first_name }}&nbsp;{{ page_user.last_name }}
-                {% else %}
-                    {{ page_user.username }}
-                {% endif %}
+                <a href="/user/{{ page_user.pk }}">
+                    {% if page_user.first_name or page_user.last_name %}
+                        {{ page_user.first_name }}&nbsp;{{ page_user.last_name }}
+                    {% else %}
+                        {{ page_user.username }}
+                    {% endif %}
+                </a>
             </h2>
             <table>
                 {% if page_user.email %}

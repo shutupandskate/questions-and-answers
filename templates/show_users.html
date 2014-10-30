@@ -1,9 +1,13 @@
-{% for user in users %}
-    <div>
-        {% if  user.first_name and user.last_name %}
-            <a href="/user/{{user.pk}}/">{{ user.first_name }} {{user.last_name}}</a>
-        {% else %}
-            <a href="/user/{{user.pk}}/">{{ user.username}}</a>
-        {% endif %}
-    </div>
-{% endfor %}
+{% if users %}
+    {% for user in users %}
+        <div>
+            {% if  user.first_name and user.last_name %}
+                <a href="/user/{{user.pk}}/">{{ user.first_name }} {{user.last_name}}</a>
+            {% else %}
+                <a href="/user/{{user.pk}}/">{{ user.username}}</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    No users
+{% endif %}

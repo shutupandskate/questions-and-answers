@@ -9,9 +9,13 @@
     <h2>Last joined users</h2>
 
     <div class="user-list">
-        {% for a_count, q_count, username, first_name, last_name, pk in users %}
-            {% include 'includes/user_card.tmpl' %}
-        {% endfor %}
+        {% if users %}
+            {% for a_count, q_count, username, first_name, last_name, pk in users %}
+                {% include 'includes/user_card.tmpl' %}
+            {% endfor %}
+        {% else %}
+            <p>No users yet</p>
+        {% endif %}
     </div>
 
     {% include 'includes/pagination.tmpl' with objectName="users" %}

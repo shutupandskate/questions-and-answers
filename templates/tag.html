@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="col-sm-12">
-        <h2>{{ tag.name }}</h2>
+        <h2>{{ tag.name|upper }}</h2>
 
         <h3>Tagged questions ({{ size }} in total)</h3>
         <div class="tag-question-list">

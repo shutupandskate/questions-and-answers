@@ -7,9 +7,13 @@
 
 {% block content %}
     <h2>Latest questions</h2>
-    {% for question in questions %}
-        {% include 'includes/question_list_item.tmpl' %}
-    {% endfor %}
+    {% if questions %}
+        {% for question in questions %}
+            {% include 'includes/question_list_item.tmpl' %}
+        {% endfor %}
+    {% else %}
+        <p>No questions yet</p>
+    {% endif %}
 
     {% include 'includes/pagination.tmpl' with objectName="questions" %}
 {% endblock %}

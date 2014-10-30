@@ -35,10 +35,10 @@ def main(request):
     size = Tag.objects.annotate(count=Count('questions')).values_list('count', flat=True)
     knowing_users = User.objects.annotate(a_count=Count('answer', distinct=True)).annotate(
         q_count=Count('question', distinct=True)).values_list('a_count', 'q_count', 'username', 'first_name',
-                                                              'last_name', 'pk').order_by('-a_count')[:8]
+                                                              'last_name', 'pk').order_by('-a_count')[:12]
     curious_users = User.objects.annotate(q_count=Count('question', distinct=True)).annotate(
         a_count=Count('answer', distinct=True)).values_list('q_count', 'a_count', 'username', 'first_name', 'last_name',
-                                                            'pk').order_by('-q_count')[:8]
+                                                            'pk').order_by('-q_count')[:12]
 
     return render_to_response('main.html', {
         'size': size,
@@ -59,7 +59,6 @@ def user_page(request, user_id):
     size = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',
                                                                                                             flat=True)[
            :20]
-    # tslist = zip(taglist, sizelist)
     bm_num = Bookmark.objects.filter(user_id=user_id).count()
     bookmarks = Bookmark.objects.filter(user_id=user_id)[:5]
 
@@ -78,19 +77,14 @@ def user_page(request, user_id):
 
 def user_question_list(request, user_id):
     page_user = get_object_or_404(User, pk=user_id)
-    asked_num = Question.objects.filter(author__username=page_user.username).count()
-    taglist = Tag.objects.filter(questions__author__id=user_id).values('questions__tags__name',
-                                                                       'questions__tags__pk').distinct()[:20]
-    sizelist = Tag.objects.filter(questions__author__id=user_id).annotate(count=Count('questions')).values_list('count',
-                                                                                                                flat=True)[
-               :20]
-    tslist = zip(taglist, sizelist)
 
     question_list = Question.objects.filter(author__username=page_user.username).order_by("-date")
     for question in question_list:
         question.votes = question.up_votes - question.down_votes
+
     paginator = Paginator(question_list, 30)
     page = request.GET.get('page')
+
     try:
         questions = paginator.page(page)
     except PageNotAnInteger:
@@ -100,9 +94,7 @@ def user_question_list(request, user_id):
 
     return render(request, 'user_q.html', {
         'questions': questions,
-        'page_user': page_user,
-        'asked_num': asked_num,
-        'tslist': tslist
+        'page_user': page_user
     }, context_instance=RequestContext(request))
 
 

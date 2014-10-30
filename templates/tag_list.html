@@ -3,7 +3,11 @@
 
 {% block content %}
     <h2>All tags</h2>
-    <div class="col-sm-12" class="tag-list">
-        {% if tag_list %}{% include 'includes/tag_cloud.tmpl' %}{% endif %}
-    </div>
+    {% if tag_list %}
+        <div class="col-sm-12" class="tag-list">
+            {% if tag_list %}{% include 'includes/tag_cloud.tmpl' %}{% endif %}
+        </div>
+    {% else %}
+        <h4>Be first to <a href="/questions/add">ask question</a> and create a tag.</h4>
+    {% endif %}
 {% endblock %}

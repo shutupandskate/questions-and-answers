@@ -17,38 +17,41 @@
     </head>
 
     <body>
-        <div class="header">
+        <div class="content-container">
+            <div class="header">
+                <div class="container">
+                    <nav class="nav">
+                        <a class="nav-item{% if request.path == '/' %} active{% endif %}" href="/">main</a>
+                        <a class="nav-item{% if request.path == '/questions/add/' %} active{% endif %}" href="/questions/add/">ask</a>
+                        <a class="nav-item{% if request.path == '/questions/' %} active{% endif %}" href="/questions/">answer</a>
+                        <a class="nav-item{% if request.path == '/users/' %} active{% endif %}" href="/users/">users</a>
+                        <a class="nav-item{% if request.path == '/tags/' %} active{% endif %}" href="/tags/">tags</a>
+                        {% include 'includes/login_block.tmpl' %}
+                    </nav>
+                </div>
+            </div>
+
             <div class="container">
-                <nav class="nav">
-                    <a class="nav-item{% if request.path == '/' %} active{% endif %}" href="/">main</a>
-                    <a class="nav-item{% if request.path == '/questions/add/' %} active{% endif %}" href="/questions/add/">ask</a>
-                    <a class="nav-item{% if request.path == '/questions/' %} active{% endif %}" href="/questions/">answer</a>
-                    <a class="nav-item{% if request.path == '/users/' %} active{% endif %}" href="/users/">users</a>
-                    <a class="nav-item{% if request.path == '/tags/' %} active{% endif %}" href="/tags/">tags</a>
-                    <a class="nav-item" href="#">search</a>
-                    {% include 'includes/login_block.tmpl' %}
-                </nav>
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col-xs-10">
+                        {% block content %}{% endblock %}
+                    </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-9">
-                    {% block content %}{% endblock %}
-                </div>
-
-                <div class="col-sm-3 sidebar">
-                    <h3>Newcomers</h3>
-                    {% show_users %}
-                    <h3>Popular tags</h3>
-                    {% show_tags %}
+                    <div class="col-xs-2 sidebar">
+                        <h3>Newcomers</h3>
+                        {% show_users %}
+                        <h3>Popular tags</h3>
+                        {% show_tags %}
+                    </div>
                 </div>
             </div>
         </div>
 
+        {% comment %}
         <!--DEBUG-->
         <div class="clearfix"></div>
         <pre style="margin-top: 40px;">{% filter force_escape %}{% debug %}{% endfilter %}</pre>
+        {% endcomment %}
 
     </body>
 

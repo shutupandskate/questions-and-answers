@@ -3,7 +3,7 @@
 {% load substract %}
 
 
-{% block title %}{{question.head}}{% endblock %}
+{% block title %}{{ question.head }}{% endblock %}
 
 
 {% block content %}
@@ -47,7 +47,7 @@
             {{ form_add.as_p }}
             <input class="author" type="hidden" name="username" value="{{ user.pk }}" />
             <input class="q-id" type="hidden" name="q_id" value="{{ question.pk }}" />
-            <input id="sendAnswer" class="btn btn-inverse" type="submit" value="Send" />
+            <input id="sendAnswer" class="btn btn-primary" type="submit" value="Send" />
         </form>
     {% else %}
         <h4><a href="/account/login/">Log in</a> and add your answer.</h4>

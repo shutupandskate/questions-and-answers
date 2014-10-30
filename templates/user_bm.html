@@ -6,11 +6,14 @@
 
 {% block userdata %}
     <h2>{{ page_user.username }}'s bookmarks</h2>
-    {% for question in questions %}{{ question.up_votes }}{% endfor %}
-    {% for bookmark in bookmark_list %}
-        {% include 'includes/question_list_item.tmpl' with object='bm' %}
-    {% endfor %}
-{%endblock%}
+    {% if bookmark_list %}
+        {% for bookmark in bookmark_list %}
+            {% include 'includes/question_list_item.tmpl' with object='bm' %}
+        {% endfor %}
+    {% else %}
+        <p>User has no bookmarks yet.</p>
+    {% endif %}
+{% endblock %}
 
 
 

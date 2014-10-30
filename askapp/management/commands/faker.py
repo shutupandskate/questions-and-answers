@@ -56,7 +56,8 @@ class Command(BaseCommand):
             content=LoremIpsum().get_sentences(5),
             author_id=random.choice(user_ids),
             date=random_date(d1, d2),
-            votes=random.randint(-50, 50),
+            up_votes=random.randint(0, 50),
+            down_votes=random.randint(0, 50),
         )
         q.save()
         question_ids.append(q.pk)

@@ -1,19 +1,22 @@
 .clearfix {
     clear: both;
 }
-.content {
-    margin-left: 20px;
-}
 textarea {
     width: 450px;
 }
-.content-area {
-    /*min-width: 700px;
-*/}
-/* user profile */
-.user-activity__info td{
+td{
     padding-right: 20px;
 }
+table {
+    margin: 5px;
+}
+
+.content-container {
+    min-width: 660px;
+    margin-bottom: 20px;
+}
+
+/* user profile */
 .user-activity__tags {
     margin-top: 20px;
 }
@@ -26,10 +29,6 @@ textarea {
     border-bottom: 1px solid #ddd;
 }
 /* user profile end */
-
-.user-list-block, .tag-list-block {
-    min-width: 700px;
-}
 
 /* main */
 .see-all {
@@ -88,13 +87,14 @@ textarea {
 
 /* include user_card */
 .user-card {
-    width: 170px;
     height: 70px;
     float: left;
-    margin: 4px 2px;
+    margin-bottom: 10px;
+    padding: 5px;
 }
 .user-card__info {
     float: left;
+    overflow: hidden;
 }
 .user-card__info ul {
     list-style: none;
@@ -103,9 +103,19 @@ textarea {
     color: #545454;
 }
 .user-card__image {
-    float: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 5px;
     width: 48px;
     height: 48px;
+}
+.user-card__image img {
+    width: 48px;
+    height: 48px;
+}
+.user-card .thumbnail {
+    position: relative;
 }
 /* user_card end */
 
@@ -119,15 +129,9 @@ textarea {
 }
 /* tag_cloud end */
 
-.tag-question-list,
-.user-list {
-    min-width: 540px;
-}
 
-/*
-     question.html 
-                    */
-/*votes*/
+/* question.html */
+/* votes */
 .user-block {
     position: relative;
     width: 300px;
@@ -180,14 +184,11 @@ textarea {
 }
 /* bookmark end */
 .question-post {
-    min-width: 470px;
+    /*min-width: 470px;*/
 }
 .question-post h3 {
     margin: 0;
     display: inline;
-}
-#answer-list {
-    min-width: 470px;
 }
 .answer-list__item {
     border-bottom: 1px solid #ddd;
@@ -212,26 +213,11 @@ textarea {
     float: left;
 }
 
-@media (min-width: 1200px) {
-  .container {
-    width: 970px;
-  }
-}
-
-@media (max-width: 768px) {
-  .menu-login {
-    display: none;
-  }
-  .sidebar {
-    display: none;
-  }
-}
 
 .header {
   background-color: #000;
   -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
           box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
-  min-width: 760px;
 }
 
 /* Nav */
@@ -261,3 +247,9 @@ textarea {
   color: #fff;
 }
 /* nav */
+
+
+.btn-login {
+    float: left;
+    margin: 5px;
+}
