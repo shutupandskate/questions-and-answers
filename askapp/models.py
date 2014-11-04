@@ -22,6 +22,9 @@ class Question(models.Model):
     def __unicode__(self):
         return '%s, Author: %s, Date: %s' % (self.head, self.author, self.date)
 
+    def count_votes(self):
+        return self.up_votes - self.down_votes
+
 
 class Answer(models.Model):
     content = models.TextField()

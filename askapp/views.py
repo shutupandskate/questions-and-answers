@@ -79,9 +79,6 @@ def user_question_list(request, user_id):
     page_user = get_object_or_404(User, pk=user_id)
 
     question_list = Question.objects.filter(author__username=page_user.username).order_by("-date")
-    for question in question_list:
-        question.votes = question.up_votes - question.down_votes
-
     paginator = Paginator(question_list, 30)
     page = request.GET.get('page')
 
@@ -103,9 +100,6 @@ def user_bookmarks(request, user_id):
     user = User.objects.get(pk=user_id)
     bookmark_list = Bookmark.objects.filter(user=user)
     bm_num = bookmark_list.count()
-
-    for bm in bookmark_list:
-        bm.question.votes = bm.question.up_votes - bm.question.down_votes
 
     paginator = Paginator(bookmark_list, 30)
     page = request.GET.get('page')
@@ -171,8 +165,6 @@ def add_question(request):
 
 def questions_list(request):
     question_list = Question.objects.all().order_by("-date")
-    for question in question_list:
-        question.votes = question.up_votes - question.down_votes
     paginator = Paginator(question_list, 10)
     page = request.GET.get('page')
     try:
@@ -190,8 +182,6 @@ def questions_list(request):
 def tag_page(request, tag_id):
     tag_obj = get_object_or_404(Tag, pk=tag_id)
     question_list = Question.objects.filter(tags__pk=tag_id).order_by("-date")[:20]
-    for question in question_list:
-        question.votes = question.up_votes - question.down_votes
     size = Question.objects.filter(tags__pk=tag_id).count()
 
     return render_to_response('tag.html', {
