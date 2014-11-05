@@ -43,7 +43,7 @@
 
             <a class="vote-up vote-button{% if user_vote == 1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-up"></i></a>
 
-            <span class="votes-number" votes="{{ post_votes }}">{{ post_votes }}</span>
+            <span class="votes-number" votes="{{ question.count_votes }}">{{ question.count_votes }}</span>
 
             <a class="vote-down vote-button{% if user_vote == -1 %} vote-button_pressed{% endif %}"><i class="fa fa-thumbs-o-down"></i></a>
         </div>

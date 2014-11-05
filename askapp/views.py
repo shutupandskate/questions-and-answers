@@ -312,7 +312,6 @@ def question_page(request, question_id):
     return render(request, 'question.html', {
         'user': request.user,
         'question': question,
-        'post_votes': question.up_votes - question.down_votes,
         'answers': answers,
         'answer_list': answer_list,
         'form_add': AddAnswerForm(),
