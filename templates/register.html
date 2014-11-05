@@ -1,48 +1,50 @@
 {% extends "base.html" %}
 
 
-{%block content%}
+{% block content %}
+    <div class="form">
+        <h2>Sign up</h2>
 
+        {% if error %}
+            <ul class="errorlist">
+                <li>{{ error }}</li>
+            </ul>
+        {% endif %}
 
-<div class="form">
-    <h2>Sign up</h2>
-    <ul class="errorlist">
-        <li>{{my_error}}</li>
-        <li>{{my_error2}}</li>
-    </ul>
-    <form id="registerForm" method="post" action="/account/register/">{% csrf_token %}
+        <form id="registerForm" method="post" action="/account/register/">
+            {% csrf_token %}
 
-        <table>
-            <tr>
-                <td>username</td>
-                <td><input type="text" id="username" class="formInputText" name="username" maxlength="30"></td>
-            </tr>
+            <table>
+                <tr>
+                    <td>username</td>
+                    <td><input type="text" id="username" class="formInputText" name="username" maxlength="30"></td>
+                </tr>
 
-            <tr>
-                <td>first name</td>
-                <td><input type="text" id="first_name" class="formInputText" name="first_name" maxlength="30"></td>
-            </tr>
+                <tr>
+                    <td>first name</td>
+                    <td><input type="text" id="first_name" class="formInputText" name="first_name" maxlength="30"></td>
+                </tr>
 
-            <tr>
-                <td>last name</td>
-                <td><input type="text" id="last_name" class="formInputText" name="last_name" maxlength="30"></td>
-            </tr>
+                <tr>
+                    <td>last name</td>
+                    <td><input type="text" id="last_name" class="formInputText" name="last_name" maxlength="30"></td>
+                </tr>
 
-            <tr>
-                <td>password</td>
-                <td><input type="password" id="password" class="formInputText" name="password" maxlength="30"></td>
-            </tr>
+                <tr>
+                    <td>password</td>
+                    <td><input type="password" id="password" class="formInputText" name="password" maxlength="30"></td>
+                </tr>
 
-            <tr>
-                <td>e-mail</td>
-                <td><input type="email" id="email" class="formInputText" name="email" maxlength="30"></td>
-            </tr>
+                <tr>
+                    <td>e-mail</td>
+                    <td><input type="email" id="email" class="formInputText" name="email" maxlength="30"></td>
+                </tr>
 
-        </table>
+            </table>
 
-        <input class="btn btn-primary btn-login" value="Register" type="submit">
-    </form>
-    <a href="/account/login/" class="btn btn-primary btn-login">Log in</a>
-    <div class="clearfix"></div>
-</div>
+            <input class="btn btn-primary btn-login" value="Register" type="submit">
+        </form>
+        <a href="/account/login/" class="btn btn-primary btn-login">Log in</a>
+        <div class="clearfix"></div>
+    </div>
 {% endblock %}

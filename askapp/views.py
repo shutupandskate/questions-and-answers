@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from django.contrib.auth import authenticate, login
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -12,6 +13,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django import template
 from django.views.decorators.http import require_POST
+from askapp import forms
 
 from askapp.models import User, Question, Answer, QuestionView, Tag, Bookmark, QVote
 
@@ -326,23 +328,33 @@ def question_page(request, question_id):
 
 
 def register(request):
-    my_error = "The user with this name or email already exists. Please, choose something else."
-    my_error2 = "Don't leave empty fields."
+    username_occupied_error = "The username is already taken. Try another."
+    invalid_form_error = "Don't leave empty fields."
+
     if request.method == 'POST':
-        if RegisterForm(request.POST).is_valid():
-            u = User.objects.create_user(
-                email=request.POST.get("email"),
-                username=request.POST.get("username"),
-                password=request.POST.get("password"),
-                first_name=request.POST.get("first_name"),
-                last_name=request.POST.get("last_name"),
-            )
+        form = RegisterForm(request.POST)
+        if form.is_valid():
 
             try:
+                u = User.objects.get(username=request.POST.get("username"))
+                return render(request, "register.html", {'error': username_occupied_error})
+            except User.DoesNotExist:
+                username = request.POST.get("username")
+                password = request.POST.get("password")
+
+                u = User.objects.create_user(
+                    email=request.POST.get("email"),
+                    username=username,
+                    password=password,
+                    first_name=request.POST.get("first_name"),
+                    last_name=request.POST.get("last_name"),
+                )
                 u.save()
-            except (ValueError, TypeError, IntegrityError):
-                return render(request, "register.html", {'my_error': my_error, })
-            return HttpResponseRedirect('/account/login')
+
+                new_user = authenticate(username=username, password=password)
+                login(request, new_user)
+
+                return HttpResponseRedirect('/')
         else:
-            return render(request, "register.html", {'my_error2': my_error2, })
-    return render(request, "register.html", {})
+            return render(request, "register.html", {'error': invalid_form_error})
+    return render(request, "register.html")
