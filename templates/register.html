@@ -11,36 +11,29 @@
             </ul>
         {% endif %}
 
-        <form id="registerForm" method="post" action="/account/register/">
+        <form id="registerForm" method="post" action="/account/register/" role="form">
             {% csrf_token %}
 
-            <table>
-                <tr>
-                    <td>username</td>
-                    <td><input type="text" id="username" class="formInputText" name="username" maxlength="30"></td>
-                </tr>
-
-                <tr>
-                    <td>first name</td>
-                    <td><input type="text" id="first_name" class="formInputText" name="first_name" maxlength="30"></td>
-                </tr>
-
-                <tr>
-                    <td>last name</td>
-                    <td><input type="text" id="last_name" class="formInputText" name="last_name" maxlength="30"></td>
-                </tr>
-
-                <tr>
-                    <td>password</td>
-                    <td><input type="password" id="password" class="formInputText" name="password" maxlength="30"></td>
-                </tr>
-
-                <tr>
-                    <td>e-mail</td>
-                    <td><input type="email" id="email" class="formInputText" name="email" maxlength="30"></td>
-                </tr>
-
-            </table>
+            <div class="form-group">
+                <div>Username</div>
+                <input type="text" id="username" class="formInputText form-control" name="username" maxlength="30">
+            </div>
+            <div class="form-group">
+                <div>First name</div>
+                <input type="text" id="first_name" class="formInputText form-control" name="first_name" maxlength="30">
+            </div>
+            <div class="form-group">
+                <div>Last name</div>
+                <input type="text" id="last_name" class="formInputText form-control" name="last_name" maxlength="30">
+            </div>
+            <div class="form-group">
+                <div>Password</div>
+                <input type="password" id="password" class="formInputText form-control" name="password" maxlength="30">
+            </div>
+            <div class="form-group">
+                <div>E-mail</div>
+                <input type="email" id="email" class="formInputText form-control" name="email" maxlength="30">
+            </div>
 
             <input class="btn btn-primary btn-login" value="Register" type="submit">
         </form>

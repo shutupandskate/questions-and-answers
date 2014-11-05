@@ -253,3 +253,7 @@ table {
     float: left;
     margin: 5px;
 }
+
+#loginForm, #registerForm {
+    width: 50%;
+}

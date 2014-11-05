@@ -12,21 +12,15 @@
     {% endif %}
 
     <div class="form">
-        <form id="loginForm" method="post" action="/account/login/">{% csrf_token %} 
-            <table>
-                <tr>
-                    <td>username</td>
-                    <td>
-                        <input type="text" id="username" class="formInputText" name="username" maxlength="30">
-                    </td>
-                </tr>
-                <tr>
-                    <td>password</td>
-                    <td>
-                        <input type="password" id="password" class="formInputText" name="password" maxlength="30">
-                    </td>
-                </tr>
-            </table>
+        <form id="loginForm" method="post" action="/account/login/" role="form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <input type="text" id="username" class="formInputText form-control" name="username" maxlength="30" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" class="formInputText form-control" name="password" maxlength="30" placeholder="Password">
+            </div>
 
             <input type="checkbox" id="remember" name="remember" value="y"> remember me for next time
 

@@ -1,29 +1,5 @@
 # coding=utf-8
 from django import forms
-from django.forms import ModelForm
-from django.db import models
-from models import Question, Answer, Tag
-
-from django.contrib.admin import widgets
-
-
-'''class AddQuestionForm(forms.Form):
-    head = forms.CharField(
-        max_length=50,
-        error_messages={'required': 'Describe your question shortly.'},
-        label=''
-    )
-    content = forms.CharField(
-        widget=forms.Textarea,
-        error_messages={'required': "Ask something."},
-        label=''
-    )
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        error_messages={'required': 'Add some tags.'},
-        label='',
-        help_text=''
-    )'''
 
 
 def clean_tags(self):

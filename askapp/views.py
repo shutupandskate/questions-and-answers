@@ -8,12 +8,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, render
 from django.utils import timezone
 from django.template import *
-from django.db import IntegrityError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django import template
 from django.views.decorators.http import require_POST
-from askapp import forms
 
 from askapp.models import User, Question, Answer, QuestionView, Tag, Bookmark, QVote
 
@@ -328,7 +326,7 @@ def question_page(request, question_id):
 
 
 def register(request):
-    username_occupied_error = "The username is already taken. Try another."
+    username_occupied_error = "This username is already taken. Try another."
     invalid_form_error = "Don't leave empty fields."
 
     if request.method == 'POST':
